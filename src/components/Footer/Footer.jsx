@@ -12,9 +12,11 @@ import {
 } from "@mui/icons-material";
 import { Logo } from "../Navbar/Navbar";
 import cards from "../Statics/cards.png";
+import { mobile } from "../../Responsive";
 const Container = styled.div`
   padding: 10px;
   display: flex;
+  ${mobile({flexDirection:"column"})}
 `;
 const Left = styled.div`
   flex: 1;

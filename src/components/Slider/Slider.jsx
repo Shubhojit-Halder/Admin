@@ -2,12 +2,14 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
 import styled from "styled-components";
 import SliderData from "./SliderData";
+import { mobile } from "../../Responsive";
 const Container = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   display: flex;
   background-color: #fff;
-  overflow-x: hidden;
+  overflow: hidden;
+  ${mobile({ height: "550px",paddingBottom:"40px",color:"#fff" })}/* overflow-x: hidden; */
 `;
 const Arrow = styled.div`
   width: 50px;
@@ -26,19 +28,23 @@ const Arrow = styled.div`
   cursor: pointer;
   opacity: 0.5;
   z-index: 2;
+  ${mobile({ bottom: "200px" })}
 `;
 
 const Wrapper = styled.div`
   height: 100%;
+  /* width: 100%; */
   display: flex;
   transform: translateX(${(props) => props.slideIndex * -100}vw);
   transition: all 1.2s ease-in-out;
+  ${mobile({ height: "100%", padding: "20px 0px" })}
 `;
 const Slide = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
+  ${mobile({ height: "100%", position: "relative" })}
 `;
 const ImageContainer = styled.div`
   display: flex;
@@ -48,20 +54,23 @@ const ImageContainer = styled.div`
 `;
 const InfoContainer = styled.div`
   flex: 1;
-  padding: 50px;
+  padding: 50px 0px;
+  ${mobile({ position: "absolute", padding: "0px 20px",bottom:50 })}
 `;
 const Image = styled.img`
   height: 80%;
+  ${mobile({ height: "100%" })}
 `;
 
 const Title = styled.h1`
   font-size: 70px;
+  ${mobile({ fontSize: "40px" })}
 `;
 const Desc = styled.p`
   margin: 50px 0px;
   font-size: 22px;
   font-weight: 500;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
 `;
 const Button = styled.button`
   background-color: #fff;
@@ -70,9 +79,11 @@ const Button = styled.button`
   cursor: pointer;
   transition: 0.5s;
   width: 150px;
-  :hover{
+  :hover {
     width: 200px;
   }
+  ${mobile({border:"none" })}
+  
 `;
 const Slider = () => {
   const [slideIndex, setSlideIndex] = useState("");

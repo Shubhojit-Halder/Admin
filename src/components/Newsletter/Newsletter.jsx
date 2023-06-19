@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import SendIcon from "@mui/icons-material/Send";
 import { Line } from "../Categories/Categories";
+import { mobile } from "../../Responsive";
 const Container = styled.div`
   padding: 30px;
   margin-top: 60px;
@@ -14,6 +15,8 @@ const Container = styled.div`
 `;
 const Title = styled.h1`
   font-size: 60px;
+  ${mobile({ fontSize:"35px" })}
+
 `;
 const Desc = styled.div`
   font-size: 20px;
@@ -27,6 +30,8 @@ const InputContainer = styled.div`
   align-items: center;
   background: #000;
   margin: 10px;
+  ${mobile({ width: "350px" })}
+
 `;
 const Input = styled.input`
   width: 400px;
@@ -36,6 +41,7 @@ const Input = styled.input`
   border: none;
   padding: 10px;
   background-color: #e3e3e3;
+  ${mobile({ width: "250px" })}
 
 `;
 const Button = styled.button`

@@ -2,6 +2,7 @@ import React from "react";
 import { PopularProducts } from "./Data";
 import SingleProduct from "./SingleProduct";
 import styled from "styled-components";
+import { mobile } from "../../Responsive";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -10,6 +11,8 @@ const Wrapper = styled.div`
 const Header = styled.h1`
   font-size: 60px;
   padding: 10px;
+  ${mobile({ fontSize:"35px" ,padding: "5px"})}
+
   
 `;
 const Container = styled.div`
@@ -25,6 +28,8 @@ const Line = styled.div`
   right: 0;
   margin: auto;
   margin-bottom: 40px;
+  ${mobile({height: "2px" })}
+
 
 `;
 const Products = () => {

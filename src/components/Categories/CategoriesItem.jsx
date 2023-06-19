@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { mobile } from "../../Responsive";
 
 const Container = styled.div`
   flex: 1;
@@ -29,6 +30,7 @@ const Title = styled.h1`
   color: #fff;
   font-size: 50px;
   padding: 10px;
+  ${mobile({fontSize:"40px"})}
 `;
 const Button = styled.button`
   padding: 10px;

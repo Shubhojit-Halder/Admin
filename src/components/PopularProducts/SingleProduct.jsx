@@ -6,14 +6,8 @@ import {
 } from "@mui/icons-material";
 import React from "react";
 import styled from "styled-components";
+import { mobile } from "../../Responsive";
 
-const Circle = styled.div`
-  height: 200px;
-  width: 200px;
-  border-radius: 50%;
-  background: #c5c5c57c;
-  position: absolute;
-`;
 const Info = styled.div`
   display: flex;
   justify-content: center;
@@ -25,12 +19,14 @@ const Info = styled.div`
   padding: 18px 10px;
   width: 280px;
   top: 0;
-  bottom: 50px;
+  bottom: 32px;
   right: 0;
   left: 0;
   margin: auto;
   transition: all 0.5s;
   z-index: 2;
+
+  ${mobile({ width: "150px", height: "150px", bottom: "120px", padding: "0px" })}
 `;
 const Icon = styled.div`
   height: 40px;
@@ -54,26 +50,28 @@ const Image = styled.img`
   width: 300px;
   object-fit: cover;
   z-index: 2;
+  ${mobile({ width: "150px", height: "150px", objectFit: "cover" })}
 `;
 
 const Container = styled.div`
   flex: 1;
   min-width: 280px;
   margin: 25px 5px;
-  height: 320px;
+  height: 300px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   margin-bottom: 70px;
-  background: #f7f7f73d;
+  /* background: #5a0f0f; */
   transition: 0.5s linear;
+  ${mobile({ minWidth: "150px",flex:0.4,margin: "25px 0px" })}
   :hover ${Info} {
     opacity: 1;
   }
-  :hover{
-    background: #00000016;
+  :hover {
+    /* background: #00000016; */
   }
 `;
 
@@ -88,6 +86,8 @@ const Details = styled.div`
   width: 280px;
   font-size: 20px;
   text-align: left;
+  ${mobile({ width: "150px" })}
+
   .name,
   .price {
     font-size: 16px;

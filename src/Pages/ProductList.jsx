@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Products from "../components/PopularProducts/Products";
 import AllProducts from "../components/AllProducts/AllProducts";
+import { mobile } from "../Responsive";
 
 const Container = styled.div``;
 const Header = styled.h1`
@@ -26,6 +27,7 @@ const Select = styled.select`
   padding: 10px;
   margin: 0px 5px;
   outline: none;
+  ${mobile({ margin:"10px 5px 10px 0px"})}
 `;
 const Option = styled.option``;
 const ProductList = () => {
