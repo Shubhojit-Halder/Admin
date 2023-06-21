@@ -8,9 +8,10 @@ import Navbar from "./components/Navbar/Navbar";
 
 const App = () => {
   // return <Home/>;
-  return <ProductList/>
+  // return <ProductList/>
   // return <ProductFull/>
   // return <Cart/>
+  return <Login/>
 };
 
 export default App;

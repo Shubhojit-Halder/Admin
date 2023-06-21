@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Navbar from "../components/Navbar/Navbar";
 import Announcement from "../components/Announcement";
 import { Add, Remove } from "@mui/icons-material";
+import { mobile } from "../Responsive";
 const Wrapper = styled.div`
   padding: 20px;
 `;
@@ -17,6 +18,7 @@ const Top = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 20px;
+  ${mobile({display:"none"})}
 `;
 const Button = styled.button`
   background-color: ${(props) => (props.bg === "filled" ? "#000" : "#fff")};
@@ -35,15 +37,20 @@ const TopText = styled.span`
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  min-height: 70vh;
+  ${mobile({marginTop:"30px"})}
   /* align-items: center; */
 `;
 const Info = styled.div`
   flex: 3;
+  
 `;
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
+  flex-wrap: wrap;
 `;
 const ProductDetails = styled.div`
   flex: 2;
@@ -77,6 +84,7 @@ const PriceDetail = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  ${mobile({ flexDirection:"row",justifyContent:"space-between",margin:"10px 0px 15px 0px"})}
 `;
 
 const Container = styled.div``;
@@ -174,11 +182,11 @@ const Cart = () => {
                 <ProductPrice>Rs. 3299</ProductPrice>
               </PriceDetail>
             </Product>
-            <Product>
+            {/* <Product>
               <ProductDetails>
                 <Image src="https://images.unsplash.com/photo-1605408499391-6368c628ef42?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fHNob2VzfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60" />
               </ProductDetails>
-            </Product>
+            </Product> */}
           </Info>
           <Summary>
             <SummaryHeader>ORDER SUMMARY</SummaryHeader>

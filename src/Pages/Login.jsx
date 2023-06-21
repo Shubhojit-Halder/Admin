@@ -14,7 +14,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.5)
     ),
     url(${(props) => props.bg});
-    background-color: #7affbf6b;
+  /* background-color: #7affbf6b; */
   background-repeat: no-repeat;
   background-size: cover;
 
@@ -33,7 +33,6 @@ const Wrapper = styled.div`
   /* border: 1px solid black; */
 `;
 const Form = styled.form`
-
   width: 100%;
   display: flex;
   justify-content: center;
@@ -72,13 +71,17 @@ const Login = () => {
     <>
       <Announcement />
       <Navbar />
-      <Container>
+      <Container
+        bg={
+          "https://images.unsplash.com/photo-1612423284934-2850a4ea6b0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjl8fEZhc2hpb258ZW58MHwwfDB8fHww&auto=format&fit=crop&w=600&q=60"
+        }
+      >
         <Wrapper>
           <Title>SIGN IN</Title>
-          <Line/>
+          <Line />
           <Form>
-            <Input placeholder="Email id"/>
-            <Input placeholder="Password"/>
+            <Input placeholder="Email id" />
+            <Input placeholder="Password" />
             <Button>SIGN IN</Button>
             <Link>Have you forgot your password?</Link>
             <Link>Don't have an account?</Link>

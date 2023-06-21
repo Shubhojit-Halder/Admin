@@ -10,7 +10,7 @@ const Container = styled.div`
   z-index: 3;
   padding-bottom: 10px;
   background: #fff;
-  box-shadow: 2px 2px 5px #00000046;
+  box-shadow: 0px 0px 10px #88888848;
 
   ${mobile({ height: "50px", padding: "0px 10px 15px 10px" })}/* background-color: black; */
 `;
