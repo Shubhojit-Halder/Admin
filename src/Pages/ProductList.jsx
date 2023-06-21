@@ -36,7 +36,7 @@ const ProductList = () => {
   const category = location.pathname.split("/")[2];
 
   const [filters, setFilters] = useState({});
-  const [sort, setSort] = useState("new");
+  const [sort, setSort] = useState("newest");
 
   const handleFilters = (e) => {
     const value = e.target.value;
@@ -45,15 +45,12 @@ const ProductList = () => {
       [e.target.name]: value,
     });
   };
-  const handleSort = (e) => {
-    setSort(e.target.value);
-  };
   // console.log({...filters,sort});
   return (
     <Container>
       <Announcement />
       <Navbar />
-      <Header>Dresses</Header>
+      <Header>{category}</Header>
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products: </FilterText>
@@ -61,7 +58,7 @@ const ProductList = () => {
             <Option selected disabled>
               Color
             </Option>
-            {["White", "Black", "Red"].map((item, index) => {
+            {["white", "black", "red","yellow","blue","green"].map((item, index) => {
               return <Option key={index}>{item}</Option>;
             })}
           </Select>
@@ -69,15 +66,15 @@ const ProductList = () => {
             <Option selected disabled>
               Size
             </Option>
-            {["XS", "S", "M"].map((item, index) => {
+            {["XS", "S", "M","L","XL"].map((item, index) => {
               return <Option key={index}>{item}</Option>;
             })}
           </Select>
         </Filter>
         <Filter>
           <FilterText>Sort Products: </FilterText>
-          <Select onChange={handleSort}>
-            <Option selected value="new">Newest</Option>
+          <Select onChange={(e)=>setSort(e.target.value)}>
+            <Option selected value="newest">Newest</Option>
             <Option value="asc">Price(Asc)</Option>
             <Option value="desc">Price(Desc)</Option>
           </Select>

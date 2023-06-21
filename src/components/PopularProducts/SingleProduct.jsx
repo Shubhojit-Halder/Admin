@@ -1,12 +1,13 @@
 import {
   FavoriteBorderOutlined,
-  HeartBrokenOutlined,
   SearchOutlined,
   ShoppingBagOutlined,
 } from "@mui/icons-material";
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../../Responsive";
+import { Link, useLocation } from "react-router-dom";
+
 
 const Info = styled.div`
   display: flex;
@@ -26,7 +27,12 @@ const Info = styled.div`
   transition: all 0.5s;
   z-index: 2;
 
-  ${mobile({ width: "150px", height: "150px", bottom: "120px", padding: "0px" })}
+  ${mobile({
+    width: "150px",
+    height: "150px",
+    bottom: "120px",
+    padding: "0px",
+  })}
 `;
 const Icon = styled.div`
   height: 40px;
@@ -66,7 +72,7 @@ const Container = styled.div`
   margin-bottom: 70px;
   /* background: #5a0f0f; */
   transition: 0.5s linear;
-  ${mobile({ minWidth: "150px",flex:0.4,margin: "25px 0px" })}
+  ${mobile({ minWidth: "150px", flex: 0.4, margin: "25px 0px" })}
   :hover ${Info} {
     opacity: 1;
   }
@@ -99,25 +105,28 @@ const Details = styled.div`
   /* border: 2px solid #0000004c; */
 `;
 const SingleProduct = (props) => {
+  
   return (
     <Container>
       <Image src={props.data.img} />
       <Details>
-        <h4 className="brand">Company</h4>
-        <p className="name">T-shirt</p>
+        <h4 className="brand">{props.data.brand}</h4>
+        <p className="name">{props.data.title}</p>
         <p className="price">
-          &#8377;400{" "}
-          <s style={{ fontWeight: "400", padding: "0px 5px" }}>&#8377;800</s>{" "}
-          <span style={{ color: "#ff0000cc" }}>(50% off) </span>
+          &#8377;{props.data.price}{" "}
+          {/* <s style={{ fontWeight: "400", padding: "0px 5px" }}>&#8377;800</s>{" "}
+          <span style={{ color: "#ff0000cc" }}>(50% off) </span> */}
         </p>
       </Details>
       <Info>
         <Icon>
           <ShoppingBagOutlined />
         </Icon>
-        <Icon>
-          <SearchOutlined />
-        </Icon>
+        <Link to={`/product/${props.data._id}`}>
+          <Icon>
+            <SearchOutlined />
+          </Icon>
+        </Link>
         <Icon>
           <FavoriteBorderOutlined />
         </Icon>
