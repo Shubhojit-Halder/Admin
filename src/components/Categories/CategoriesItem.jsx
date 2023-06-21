@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../../Responsive";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   flex: 1;
@@ -24,13 +25,12 @@ const Info = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
 `;
 const Title = styled.h1`
   color: #fff;
   font-size: 50px;
   padding: 10px;
-  ${mobile({fontSize:"40px"})}
+  ${mobile({ fontSize: "40px" })}
 `;
 const Button = styled.button`
   padding: 10px;
@@ -39,7 +39,7 @@ const Button = styled.button`
   cursor: pointer;
   transition: 0.5s;
   font-size: 15px;
-  :hover{
+  :hover {
     font-weight: 600;
     background-color: #0000007d;
     color: #fff;
@@ -51,7 +51,9 @@ const CategoriesItem = (props) => {
       <Image src={props.data.img} />
       <Info>
         <Title>{props.data.title}</Title>
-        <Button>Shop Now</Button>
+        <Link to={`/products/${props.data.category}`}>
+          <Button>Shop Now</Button>
+        </Link>
       </Info>
     </Container>
   );

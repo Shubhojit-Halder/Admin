@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Products from "../components/PopularProducts/Products";
 import AllProducts from "../components/AllProducts/AllProducts";
 import { mobile } from "../Responsive";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.div``;
 const Header = styled.h1`
@@ -27,10 +28,27 @@ const Select = styled.select`
   padding: 10px;
   margin: 0px 5px;
   outline: none;
-  ${mobile({ margin:"10px 5px 10px 0px"})}
+  ${mobile({ margin: "10px 5px 10px 0px" })}
 `;
 const Option = styled.option``;
 const ProductList = () => {
+  const location = useLocation();
+  const category = location.pathname.split("/")[2];
+
+  const [filters, setFilters] = useState({});
+  const [sort, setSort] = useState("new");
+
+  const handleFilters = (e) => {
+    const value = e.target.value;
+    setFilters({
+      ...filters,
+      [e.target.name]: value,
+    });
+  };
+  const handleSort = (e) => {
+    setSort(e.target.value);
+  };
+  // console.log({...filters,sort});
   return (
     <Container>
       <Announcement />
@@ -39,41 +57,33 @@ const ProductList = () => {
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products: </FilterText>
-          <Select>
+          <Select name="color" onChange={handleFilters}>
             <Option selected disabled>
               Color
             </Option>
-            <Option>White</Option>
-            <Option>Black</Option>
-            <Option>Red</Option>
-            <Option>Green</Option>
-            <Option>Blue</Option>
-            <Option>Yellow</Option>
+            {["White", "Black", "Red"].map((item, index) => {
+              return <Option key={index}>{item}</Option>;
+            })}
           </Select>
-          <Select>
+          <Select name="size" onChange={handleFilters}>
             <Option selected disabled>
               Size
             </Option>
-            <Option>XS</Option>
-            <Option>S</Option>
-            <Option>M</Option>
-            <Option>L</Option>
-            <Option>XL</Option>
-            <Option>XXL</Option>
+            {["XS", "S", "M"].map((item, index) => {
+              return <Option key={index}>{item}</Option>;
+            })}
           </Select>
         </Filter>
         <Filter>
           <FilterText>Sort Products: </FilterText>
-          <Select>
-            <Option selected disabled>
-              None
-            </Option>
-            <Option>Price(Asc)</Option>
-            <Option>Price(Desc)</Option>
+          <Select onChange={handleSort}>
+            <Option selected value="new">Newest</Option>
+            <Option value="asc">Price(Asc)</Option>
+            <Option value="desc">Price(Desc)</Option>
           </Select>
         </Filter>
       </FilterContainer>
-      <AllProducts />
+      <AllProducts category={category} filters={filters} sort={sort}/>
     </Container>
   );
 };
