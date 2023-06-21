@@ -5,6 +5,8 @@ import { Badge, MenuItem } from "@mui/material";
 import { ShoppingCartCheckoutOutlined } from "@mui/icons-material";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import { mobile } from "../../Responsive";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 const Container = styled.div`
   height: 60px;
   z-index: 3;
@@ -12,7 +14,10 @@ const Container = styled.div`
   background: #fff;
   box-shadow: 0px 0px 10px #88888848;
 
-  ${mobile({ height: "50px", padding: "0px 10px 15px 10px" })}/* background-color: black; */
+  ${mobile({
+    height: "50px",
+    padding: "0px 10px 15px 10px",
+  })}/* background-color: black; */
 `;
 
 const Wrapper = styled.div`
@@ -62,8 +67,7 @@ const Center = styled.div`
   flex: 2;
   display: flex;
   align-items: center;
-  ${mobile({flex:0.5})}
-  /* justify-content: center; */
+  ${mobile({ flex: 0.5 })}/* justify-content: center; */
   /* text-align: center; */
 `;
 export const Logo = styled.h1`
@@ -77,6 +81,8 @@ const Right = styled.div`
   justify-content: end;
 `;
 const Navbar = () => {
+  const quantity = useSelector((state) => state.cart.quantity);
+  console.log(quantity);
   return (
     <Container>
       <Wrapper>
@@ -102,13 +108,13 @@ const Navbar = () => {
           </Left>
           <MenuItem className="menuitem">Register</MenuItem>
           <MenuItem className="menuitem">Login</MenuItem>
-
-          <MenuItem>
-            <Badge badgeContent={5} color="primary">
-              {/* <ShoppingCartCheckoutOutlined/> */}
-              <ShoppingBagOutlinedIcon />
-            </Badge>
-          </MenuItem>
+          <Link to="/cart">
+            <MenuItem sx={{color:"#000"}}>
+              <Badge badgeContent={quantity} color="primary">
+                <ShoppingBagOutlinedIcon />
+              </Badge>
+            </MenuItem>
+          </Link>
         </Right>
       </Wrapper>
     </Container>

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { mobile } from "../../Responsive";
 
-
 export const Container = styled.div``;
 export const Wrapper = styled.div`
   padding: 50px;
@@ -67,6 +66,7 @@ export const FilterColor = styled.div`
   margin: 4px;
   border-radius: 50%;
   cursor: pointer;
+  transition: 0.1s;
 `;
 export const FilterSize = styled.div`
   border: 1px solid black;
@@ -78,6 +78,7 @@ export const FilterSize = styled.div`
   align-items: center;
   margin-right: 2px;
   cursor: pointer;
+  transition: 0.2s;
 `;
 export const AddtoContainer = styled.div`
   display: flex;
