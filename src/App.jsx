@@ -4,6 +4,7 @@ import Login from "./Pages/Login";
 import ProductFull from "./Pages/ProductFull";
 import ProductList from "./Pages/ProductList";
 import Register from "./Pages/Register";
+import Success from "./Pages/Success";
 import Navbar from "./components/Navbar/Navbar";
 
 import {
@@ -18,6 +19,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route exact path="/success" element={<Success />} />
         {/* <Route path="/products" element={<ProductList />} /> */}
         <Route path="/products/:category" element={<ProductList />} />
         <Route path="/product/:id" element={<ProductFull />} />

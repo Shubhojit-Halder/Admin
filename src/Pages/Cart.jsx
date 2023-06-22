@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer/Footer";
 import styled from "styled-components";
 import Navbar from "../components/Navbar/Navbar";
 import Announcement from "../components/Announcement";
 import { Add, Remove } from "@mui/icons-material";
 import { mobile } from "../Responsive";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../ReduxStore/CartRedux";
+import StripeCheckout from "react-stripe-checkout";
+import { userRequest } from "../RequestMethods";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const Wrapper = styled.div`
   padding: 20px;
 `;
@@ -18,7 +24,7 @@ const Top = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  ${mobile({display:"none"})}
+  ${mobile({ display: "none" })}
 `;
 const Button = styled.button`
   background-color: ${(props) => (props.bg === "filled" ? "#000" : "#fff")};
@@ -39,12 +45,10 @@ const Bottom = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   min-height: 70vh;
-  ${mobile({marginTop:"30px"})}
-  /* align-items: center; */
+  ${mobile({ marginTop: "30px" })}/* align-items: center; */
 `;
 const Info = styled.div`
   flex: 3;
-  
 `;
 const Product = styled.div`
   display: flex;
@@ -71,7 +75,12 @@ const ProductSize = styled.span``;
 const ProductName = styled.span`
   font-size: 17px;
 `;
-const ProductId = styled.span``;
+const ProductId = styled.span`
+  /* display: "flex";
+  flex-wrap: wrap; */
+  font-size: 10px;
+`;
+
 const ProductColor = styled.div`
   width: 20px;
   height: 20px;
@@ -84,7 +93,11 @@ const PriceDetail = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  ${mobile({ flexDirection:"row",justifyContent:"space-between",margin:"10px 0px 15px 0px"})}
+  ${mobile({
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: "10px 0px 15px 0px",
+  })}
 `;
 
 const Container = styled.div``;
@@ -138,7 +151,42 @@ const SummaryItemPrice = styled.span`
   font-weight: ${(props) => props.fontWeight};
   font-size: ${(props) => props.fontSize};
 `;
+
 const Cart = () => {
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
+  const [stripeToken, setStripeToken] = useState(null);
+  const onToken = (token) => {
+    setStripeToken(token);
+    console.log(token);
+  };
+  const handleClick = async () => {
+    console.log(cart.product);
+    try {
+      const res = await userRequest.post("/checkout/payment", cart.product);
+      if (res.data.url) {
+        window.location.href = res.data.url;
+      }
+    } catch (error) {
+      console.log("haan bhai abr error");
+    }
+  };
+  useEffect(() => {
+    const makeRequest = async () => {
+      try {
+        const res = await userRequest.post("/checkout/payment", {
+          tokenId: stripeToken.id,
+          amount: 500,
+        });
+        console.log(res.data);
+        Navigate("/sucess", { state: res.data });
+      } catch (error) {
+        console.log("arey bhai" + error);
+      }
+    };
+    stripeToken && makeRequest();
+  }, [stripeToken, cart.price, Navigate]);
   return (
     <Container>
       <Announcement />
@@ -156,43 +204,56 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            <Product>
-              <ProductDetails>
-                <Image src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60" />
-                <Details>
-                  <ProductBrand>Nike</ProductBrand>
-                  <ProductName>
-                    <b>Product:</b>Red Sneaker
-                  </ProductName>
-                  <ProductId>
-                    <b>ID:</b> 23SA1242WEZ
-                  </ProductId>
-                  <ProductColor color="red" />
-                  <ProductSize>
-                    <b>Size:</b>10
-                  </ProductSize>
-                </Details>
-              </ProductDetails>
-              <PriceDetail>
-                <ProductAmountContainer>
-                  <Add />
-                  <ProductAmount>2</ProductAmount>
-                  <Remove />
-                </ProductAmountContainer>
-                <ProductPrice>Rs. 3299</ProductPrice>
-              </PriceDetail>
-            </Product>
-            {/* <Product>
-              <ProductDetails>
-                <Image src="https://images.unsplash.com/photo-1605408499391-6368c628ef42?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fHNob2VzfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60" />
-              </ProductDetails>
-            </Product> */}
+            {cart.product.map((product) => {
+              return (
+                <Product key={product._id}>
+                  <ProductDetails>
+                    <Image src={product.img} />
+                    <Details>
+                      <ProductBrand>{product.brand}</ProductBrand>
+                      <ProductName>
+                        <b>Product:</b>
+                        {product.title}
+                      </ProductName>
+                      <ProductId>
+                        <b>ID:</b> {product._id}
+                      </ProductId>
+                      <ProductColor color={product.color} />
+                      <ProductSize>
+                        <b>Size:</b>
+                        {product.size}
+                      </ProductSize>
+                    </Details>
+                  </ProductDetails>
+                  <PriceDetail>
+                    <ProductAmountContainer>
+                      <Add
+                        onclick={() => {
+                          quantity + 1;
+                          dispatch(addProduct({ ...product, quantity }));
+                        }}
+                      />
+                      <ProductAmount>{product.quantity}</ProductAmount>
+                      <Remove
+                        onclick={() => {
+                          quantity = quantity - 1;
+                          dispatch(addProduct({ ...product, quantity }));
+                        }}
+                      />
+                    </ProductAmountContainer>
+                    <ProductPrice>
+                      Rs. {product.price * product.quantity}
+                    </ProductPrice>
+                  </PriceDetail>
+                </Product>
+              );
+            })}
           </Info>
           <Summary>
             <SummaryHeader>ORDER SUMMARY</SummaryHeader>
             <SummaryItem>
               <SummaryItemText fontWeight="600">Subtotal: </SummaryItemText>
-              <SummaryItemPrice>Rs. 5490</SummaryItemPrice>
+              <SummaryItemPrice>Rs. {cart.price}</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText fontWeight="600">
@@ -210,10 +271,16 @@ const Cart = () => {
               <SummaryItemText fontSize="28px" fontWeight="600">
                 Total
               </SummaryItemText>
-              <SummaryItemPrice fontSize="28px">Rs. 5490</SummaryItemPrice>
+              <SummaryItemPrice fontSize="28px">
+                Rs. {cart.price}
+              </SummaryItemPrice>
             </SummaryItem>
-
-            <Button bg="filled" margin="20px 0px 0px 0px" width="100%">
+            <Button
+              bg="filled"
+              margin="20px 0px 0px 0px"
+              width="100%"
+              onClick={handleClick}
+            >
               CHECKOUT NOW
             </Button>
           </Summary>
