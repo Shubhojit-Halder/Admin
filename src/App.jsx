@@ -15,7 +15,7 @@ import {
   Navigate,
 } from "react-router-dom";
 const App = () => {
-  const user = useSelector(state=>state.user.currentUser);
+  const user = useSelector((state) => state.user.currentUser);
   return (
     <Router>
       <Routes>
@@ -28,12 +28,12 @@ const App = () => {
         <Route
           exact
           path="/login"
-          element={user ? <Navigate to="/" /> : <Login />}
+          element={user !== null ? <Navigate to="/" /> : <Login />}
         />
         <Route
           exact
           path="/register"
-          element={user ? <Navigate to="/" /> : <Register />}
+          element={user !== null ? <Navigate to="/" /> : <Register />}
         />
       </Routes>
     </Router>

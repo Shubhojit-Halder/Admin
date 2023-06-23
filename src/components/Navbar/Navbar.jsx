@@ -5,8 +5,12 @@ import { Badge, MenuItem } from "@mui/material";
 import { ShoppingCartCheckoutOutlined } from "@mui/icons-material";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import { mobile } from "../../Responsive";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { loginReq } from "../../loginApiCalls";
+import { logout } from "../../ReduxStore/userSlice";
+import { addProduct, removeAllProducts } from "../../ReduxStore/cartSlice";
+import { publicRequest, userRequest } from "../../RequestMethods";
 const Container = styled.div`
   height: 60px;
   z-index: 3;
@@ -81,19 +85,60 @@ const Right = styled.div`
   justify-content: end;
 `;
 const Navbar = () => {
+  const cartItems = useSelector((state) => state.cart);
+  // console.log(cartItems);
   const quantity = useSelector((state) => state.cart.quantity);
-  // console.log(quantity);
+  const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const handleLogout = async () => {
+    try {
+      // console.log("hello");
+      if (cartItems.quantity) {
+        const res = await userRequest.post(`/cart`, {
+          userId: user._id,
+          products: cartItems.product,
+          quantity: cartItems.quantity,
+          price: cartItems.price,
+        });
+        console.log(res.data);
+      }
+
+      dispatch(logout());
+      dispatch(removeAllProducts());
+      console.log("bye");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Container>
       <Wrapper>
         <Center>
           <Logo>HALDER'S</Logo>
-          <MenuItem style={{ marginLeft: "20px" }} className="menuitem">
-            MEN
-          </MenuItem>
-          <MenuItem style={{ marginLeft: "20px" }} className="menuitem">
-            WOMEN
-          </MenuItem>
+          <Link
+            to="/products/man"
+            style={{
+              textDecoration: "none",
+              color: "initial",
+              fontWeight: 500,
+            }}
+          >
+            <MenuItem style={{ marginLeft: "20px" }} className="menuitem">
+              MEN
+            </MenuItem>
+          </Link>
+          <Link
+            to="/products/woman"
+            style={{
+              textDecoration: "none",
+              color: "initial",
+              fontWeight: 500,
+            }}
+          >
+            <MenuItem style={{ marginLeft: "20px" }} className="menuitem">
+              WOMEN
+            </MenuItem>
+          </Link>
           <MenuItem style={{ marginLeft: "20px" }} className="menuitem">
             KIDS
           </MenuItem>
@@ -106,10 +151,34 @@ const Navbar = () => {
               <SearchIcon style={{ color: "gray", fontSize: "16px" }} />
             </SearchContainer>
           </Left>
-          <MenuItem className="menuitem">Register</MenuItem>
-          <MenuItem className="menuitem">Login</MenuItem>
+          {user ? (
+            <MenuItem
+              className="menuitem"
+              sx={{
+                margin: "0px 10px",
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                backgroundColor: "#b0b0b063",
+              }}
+            >
+              {user.username.toUpperCase().slice(0, 1)}
+            </MenuItem>
+          ) : (
+            <MenuItem className="menuitem">Register</MenuItem>
+          )}
+          {user ? (
+            <MenuItem className="menuitem" onClick={handleLogout}>
+              Logout
+            </MenuItem>
+          ) : (
+            <Link to="/login" style={{ textDecoration: "none", color: "#000" }}>
+              <MenuItem className="menuitem">Login</MenuItem>
+            </Link>
+          )}
+
           <Link to="/cart">
-            <MenuItem sx={{color:"#000"}}>
+            <MenuItem sx={{ color: "#000" }}>
               <Badge badgeContent={quantity} color="primary">
                 <ShoppingBagOutlinedIcon />
               </Badge>

@@ -6,18 +6,23 @@ import Categories from "../components/Categories/Categories";
 import Products from "../components/PopularProducts/Products";
 import Newsletter from "../components/Newsletter/Newsletter";
 import Footer from "../components/Footer/Footer";
+import { useSelector } from "react-redux";
+import Login from "./Login";
 
 const Home = () => {
+  const user = useSelector((state) => state.user.currentUser);
   return (
-    <div>
-      <Announcement/>
-      <Navbar/>
-      <Slider/>
-      <Categories/>
-      <Products/>
-      <Newsletter/>
-      <Footer/>
-    </div>
+    <>
+      <div>
+        <Announcement />
+        <Navbar />
+        <Slider />
+        <Categories />
+        <Products />
+        <Newsletter />
+        <Footer />
+      </div>
+    </>
   );
 };
 

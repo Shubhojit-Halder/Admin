@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Footer from "../components/Footer/Footer";
 import styled from "styled-components";
 import Navbar from "../components/Navbar/Navbar";
@@ -6,157 +6,23 @@ import Announcement from "../components/Announcement";
 import { Add, Remove } from "@mui/icons-material";
 import { mobile } from "../Responsive";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../ReduxStore/cartSlice";
+import {
+  addProduct,
+  moneyReductionWhenProductRemoved,
+  removeOneProduct,
+} from "../ReduxStore/cartSlice";
 import StripeCheckout from "react-stripe-checkout";
 import { userRequest } from "../RequestMethods";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-const Wrapper = styled.div`
-  padding: 20px;
-`;
-const Title = styled.div`
-  font-weight: 400;
-  text-align: center;
-  font-size: 25px;
-`;
-const Top = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  ${mobile({ display: "none" })}
-`;
-const Button = styled.button`
-  background-color: ${(props) => (props.bg === "filled" ? "#000" : "#fff")};
-  color: ${(props) => (props.bg === "filled" ? "#fff" : "#000")};
-  padding: 10px;
-  border: ${(props) => (props.bg === "filled" ? "none" : "1.5px solid black")};
-  margin: ${(props) => props.margin};
-  width: ${(props) => props.width};
-`;
-const TopTexts = styled.div``;
-const TopText = styled.span`
-  cursor: pointer;
-  margin: 0px 10px;
-  text-decoration: underline;
-`;
-const Bottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  min-height: 70vh;
-  ${mobile({ marginTop: "30px" })}/* align-items: center; */
-`;
-const Info = styled.div`
-  flex: 3;
-`;
-const Product = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-  flex-wrap: wrap;
-`;
-const ProductDetails = styled.div`
-  flex: 2;
-  display: flex;
-`;
-const Image = styled.img`
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-`;
-const Details = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-`;
-const ProductSize = styled.span``;
-const ProductName = styled.span`
-  font-size: 17px;
-`;
-const ProductId = styled.span`
-  /* display: "flex";
-  flex-wrap: wrap; */
-  font-size: 10px;
-`;
+import { Bottom, Button, Details, Image, Info, PriceDetail, Product, ProductAmount, ProductAmountContainer, ProductBrand, ProductColor, ProductDetails, ProductId, ProductName, ProductPrice, ProductSize, Summary, SummaryHeader, SummaryItem, SummaryItemPrice, SummaryItemText, Title, Top, TopText, TopTexts, Wrapper } from "./Styles/CartStyles";
 
-const ProductColor = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: ${(props) => props.color};
-`;
-const PriceDetail = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  ${mobile({
-    flexDirection: "row",
-    justifyContent: "space-between",
-    margin: "10px 0px 15px 0px",
-  })}
-`;
-
-const Container = styled.div``;
-const ProductAmountContainer = styled.div`
-  display: flex;
-  margin: 10px;
-  justify-content: center;
-  align-items: center;
-`;
-const ProductAmount = styled.div`
-  border: 1px solid black;
-  width: 20px;
-  height: 20px;
-  padding: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0px 5px;
-`;
-const ProductBrand = styled.h3`
-  font-size: 22px;
-`;
-const ProductPrice = styled.div`
-  font-size: 25px;
-  font-weight: 500;
-  margin-top: 10px;
-`;
-
-const Summary = styled.div`
-  flex: 1;
-  border: 0.2px solid #00000071;
-  padding: 10px;
-  height: 280px;
-`;
-const SummaryHeader = styled.h3`
-  font-size: 28px;
-  margin-bottom: 10px;
-`;
-const SummaryItem = styled.div`
-  padding: 10px 0px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const SummaryItemText = styled.span`
-  font-weight: ${(props) => props.fontWeight};
-  font-size: ${(props) => props.fontSize};
-  margin-right: 10px;
-`;
-const SummaryItemPrice = styled.span`
-  font-weight: ${(props) => props.fontWeight};
-  font-size: ${(props) => props.fontSize};
-`;
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const Navigate = useNavigate();
-
+  const [cartData, setCartData] = useState(cart.product);
+  
   const handlePaymentRequest = async () => {
     console.log(cart.product);
     try {
@@ -171,7 +37,7 @@ const Cart = () => {
   };
 
   return (
-    <Container>
+    <>
       <Announcement />
       <Navbar />
       <Wrapper>
@@ -187,50 +53,73 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {cart.product.map((product) => {
-              return (
-                <Product key={product._id}>
-                  <ProductDetails>
-                    <Image src={product.img} />
-                    <Details>
-                      <ProductBrand>{product.brand}</ProductBrand>
-                      <ProductName>
-                        <b>Product:</b>
-                        {product.title}
-                      </ProductName>
-                      <ProductId>
-                        <b>ID:</b> {product._id}
-                      </ProductId>
-                      <ProductColor color={product.color} />
-                      <ProductSize>
-                        <b>Size:</b>
-                        {product.size}
-                      </ProductSize>
-                    </Details>
-                  </ProductDetails>
-                  <PriceDetail>
-                    <ProductAmountContainer>
-                      <Add
-                        onClick={() => {
-                          product.quantity = product.quantity + 1;
-                          dispatch(addProduct(product));
-                        }}
-                      />
-                      <ProductAmount>{product.quantity}</ProductAmount>
-                      <Remove
-                        onClick={() => {
-                          product.quantity = product.quantity - 1;
-                          dispatch(addProduct(product));
-                        }}
-                      />
-                    </ProductAmountContainer>
-                    <ProductPrice>
-                      Rs. {product.price * product.quantity}
-                    </ProductPrice>
-                  </PriceDetail>
-                </Product>
-              );
-            })}
+            {cartData.length != 0 ? (
+              cartData.map((product, index) => {
+                return (
+                  <Product key={product._id + index}>
+                    <ProductDetails>
+                      <Image src={product.img} />
+                      <Details>
+                        <ProductBrand>{product.brand}</ProductBrand>
+                        <ProductName>
+                          <b>Product:</b>
+                          {product.title}
+                        </ProductName>
+                        <ProductId>
+                          <b>ID:</b> {product._id}
+                        </ProductId>
+                        <ProductColor color={product.color} />
+                        <ProductSize>
+                          <b>Size:</b>
+                          {product.size}
+                        </ProductSize>
+                      </Details>
+                    </ProductDetails>
+                    <PriceDetail>
+                      <ProductAmountContainer>
+                        <Add
+                          onClick={() => {
+                            product.quantity = product.quantity + 1;
+                            // dispatch(addProduct(product));
+                          }}
+                        />
+                        <ProductAmount>{product.quantity}</ProductAmount>
+                        <Remove
+                          onClick={() => {
+                            console.log(index);
+                            setCartData(
+                              cartData
+                                .slice(0, index)
+                                .concat(cartData.slice(index + 1))
+                            );
+                            dispatch(
+                              moneyReductionWhenProductRemoved(
+                                cartData[index].price * cartData[index].quantity
+                              )
+                            );
+                            dispatch(
+                              removeOneProduct(
+                                cartData
+                                  .slice(0, index)
+                                  .concat(cartData.slice(index + 1))
+                              )
+                            );
+                          }}
+                        />
+                      </ProductAmountContainer>
+                      <ProductPrice>
+                        Rs. {product.price * product.quantity}
+                      </ProductPrice>
+                    </PriceDetail>
+                  </Product>
+                );
+              })
+            ) : (
+              <Image
+                style={{ width: "100%", height: "70%" }}
+                src="https://assets.materialup.com/uploads/16e7d0ed-140b-4f86-9b7e-d9d1c04edb2b/preview.png"
+              />
+            )}
           </Info>
           <Summary>
             <SummaryHeader>ORDER SUMMARY</SummaryHeader>
@@ -270,7 +159,7 @@ const Cart = () => {
         </Bottom>
       </Wrapper>
       <Footer />
-    </Container>
+    </>
   );
 };
 

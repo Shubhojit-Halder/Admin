@@ -26,9 +26,11 @@ import {
   Total,
   Wrapper,
 } from "./Styles/ProductFullContainer";
-import { addProduct } from "../ReduxStore/cartSlice";
-import { useDispatch } from "react-redux";
+import { addProduct, updateProductQuantity } from "../ReduxStore/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 const ProductFull = () => {
+  const cart = useSelector((state) => state.cart);
+
   const location = useLocation();
   const dispatch = useDispatch();
   const id = location.pathname.split("/")[2];
@@ -37,11 +39,31 @@ const ProductFull = () => {
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const [isLoaded, setisloaded] = useState(false);
-
+  const cartData =JSON.parse(JSON.stringify(cart.product));
+  
+  
+  let push = false;
+  let newq = 0;
   console.log(product.price);
+
   const handleAddToCart = () => {
-    dispatch(addProduct({ ...product, quantity, color, size }));
+    for (let i = 0; i < cartData.length; i++) {
+      if (cartData[i]._id === product._id) {
+        newq = quantity + cartData[i].quantity;
+        console.log(cartData[i].quantity, newq);
+        cartData[i].quantity = newq;
+        console.log(cartData[i].quantity, newq);
+        dispatch(updateProductQuantity(cartData));
+        push = true;
+        newq = 0;
+        break;
+      }
+    }
+    if (!push) dispatch(addProduct({ ...product, quantity, color, size }));
+    console.log(cartData);
+
   };
+  // console.log({ ...product, quantity, color, size });
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -85,7 +107,7 @@ const ProductFull = () => {
                         }}
                         style={{
                           border: data === color && "2px solid #070707bd",
-                          scale:data === color && "1.15",
+                          scale: data === color && "1.15",
                         }}
                       />
                     );

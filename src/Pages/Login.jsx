@@ -6,6 +6,7 @@ import { Line } from "../components/Categories/Categories";
 import { useDispatch, useSelector } from "react-redux";
 import { loginReq } from "../loginApiCalls";
 import { Alert, Snackbar } from "@mui/material";
+import { userRequest } from "../RequestMethods";
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -78,7 +79,13 @@ const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { isFetching, isError } = useSelector((state) => state.user);
+  const { isFetching, isError, currentUser } = useSelector(
+    (state) => state.user
+  );
+  const loadCartData = async () => {
+    const res = await userRequest.get(`/find/${currentUser._id}`);
+    console.log(res.data);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     loginReq(dispatch, { username, password });
@@ -96,7 +103,11 @@ const Login = () => {
           <Title>SIGN IN</Title>
           <Line />
           <Form>
-            {isError && <p style={{color:"red",fontWeight:600}}>Something went wrong!! Try again</p>}
+            {isError && (
+              <p style={{ color: "red", fontWeight: 600 }}>
+                Something went wrong!! Try again
+              </p>
+            )}
             <Input
               placeholder="Email id"
               onChange={(e) => {

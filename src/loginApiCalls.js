@@ -1,6 +1,6 @@
 
 import { loginStart,loginSuccessful,loginFailed } from "./ReduxStore/userSlice";
-import { publicRequest } from "./RequestMethods";
+import { publicRequest, userRequest } from "./RequestMethods";
 
 export const loginReq=async (dispatch,user)=>{
     dispatch(loginStart());
