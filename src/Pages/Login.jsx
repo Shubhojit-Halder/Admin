@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar/Navbar";
 import Announcement from "../components/Announcement";
 import { Line } from "../components/Categories/Categories";
+import { useDispatch, useSelector } from "react-redux";
+import { loginReq } from "../loginApiCalls";
+import { Alert, Snackbar } from "@mui/material";
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -60,6 +63,11 @@ const Button = styled.button`
   font-size: 20px;
   margin: 10px;
   cursor: pointer;
+  :disabled {
+    background: #00000047;
+    color: #fff;
+    cursor: not-allowed;
+  }
 `;
 const Link = styled.a`
   cursor: pointer;
@@ -67,6 +75,14 @@ const Link = styled.a`
   text-decoration: underline;
 `;
 const Login = () => {
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const { isFetching, isError } = useSelector((state) => state.user);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    loginReq(dispatch, { username, password });
+  };
   return (
     <>
       <Announcement />
@@ -80,9 +96,21 @@ const Login = () => {
           <Title>SIGN IN</Title>
           <Line />
           <Form>
-            <Input placeholder="Email id" />
-            <Input placeholder="Password" />
-            <Button>SIGN IN</Button>
+            {isError && <p style={{color:"red",fontWeight:600}}>Something went wrong!! Try again</p>}
+            <Input
+              placeholder="Email id"
+              onChange={(e) => {
+                setUserName(e.target.value);
+              }}
+            />
+            <Input
+              placeholder="Password"
+              // type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button onClick={handleSubmit} disabled={isFetching}>
+              SIGN IN
+            </Button>
             <Link>Have you forgot your password?</Link>
             <Link>Don't have an account?</Link>
           </Form>

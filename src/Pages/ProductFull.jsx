@@ -26,7 +26,7 @@ import {
   Total,
   Wrapper,
 } from "./Styles/ProductFullContainer";
-import { addProduct } from "../ReduxStore/CartRedux";
+import { addProduct } from "../ReduxStore/cartSlice";
 import { useDispatch } from "react-redux";
 const ProductFull = () => {
   const location = useLocation();

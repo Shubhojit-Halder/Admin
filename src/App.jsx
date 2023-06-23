@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import Cart from "./Pages/Cart";
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
@@ -14,7 +15,7 @@ import {
   Navigate,
 } from "react-router-dom";
 const App = () => {
-  const user = true;
+  const user = useSelector(state=>state.user.currentUser);
   return (
     <Router>
       <Routes>

@@ -6,7 +6,7 @@ import Announcement from "../components/Announcement";
 import { Add, Remove } from "@mui/icons-material";
 import { mobile } from "../Responsive";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../ReduxStore/CartRedux";
+import { addProduct } from "../ReduxStore/cartSlice";
 import StripeCheckout from "react-stripe-checkout";
 import { userRequest } from "../RequestMethods";
 import { useNavigate } from "react-router-dom";
@@ -156,37 +156,20 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const Navigate = useNavigate();
-  const [stripeToken, setStripeToken] = useState(null);
-  const onToken = (token) => {
-    setStripeToken(token);
-    console.log(token);
-  };
-  const handleClick = async () => {
+
+  const handlePaymentRequest = async () => {
     console.log(cart.product);
     try {
       const res = await userRequest.post("/checkout/payment", cart.product);
       if (res.data.url) {
         window.location.href = res.data.url;
       }
+      console.log(res);
     } catch (error) {
-      console.log("haan bhai abr error");
+      console.log("Error in payment processing");
     }
   };
-  useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        const res = await userRequest.post("/checkout/payment", {
-          tokenId: stripeToken.id,
-          amount: 500,
-        });
-        console.log(res.data);
-        Navigate("/sucess", { state: res.data });
-      } catch (error) {
-        console.log("arey bhai" + error);
-      }
-    };
-    stripeToken && makeRequest();
-  }, [stripeToken, cart.price, Navigate]);
+
   return (
     <Container>
       <Announcement />
@@ -228,16 +211,16 @@ const Cart = () => {
                   <PriceDetail>
                     <ProductAmountContainer>
                       <Add
-                        onclick={() => {
-                          quantity + 1;
-                          dispatch(addProduct({ ...product, quantity }));
+                        onClick={() => {
+                          product.quantity = product.quantity + 1;
+                          dispatch(addProduct(product));
                         }}
                       />
                       <ProductAmount>{product.quantity}</ProductAmount>
                       <Remove
-                        onclick={() => {
-                          quantity = quantity - 1;
-                          dispatch(addProduct({ ...product, quantity }));
+                        onClick={() => {
+                          product.quantity = product.quantity - 1;
+                          dispatch(addProduct(product));
                         }}
                       />
                     </ProductAmountContainer>
@@ -279,7 +262,7 @@ const Cart = () => {
               bg="filled"
               margin="20px 0px 0px 0px"
               width="100%"
-              onClick={handleClick}
+              onClick={handlePaymentRequest}
             >
               CHECKOUT NOW
             </Button>
