@@ -14,12 +14,15 @@ const cartSlice = createSlice({
       state.price += action.payload.price * action.payload.quantity;
     },
     updateProductQuantity: (state, action) => {
-      state.product =action.payload;
+      state.product = action.payload;
       // state.price += (action.payload.quantity-state.product.quantity)*action.payload.price;
+    },
+    updateCartValuewithQuantity:(state,action)=>{
+      state.price += action.payload;
     },
     removeOneProduct: (state, action) => {
       state.product = action.payload;
-      state.quantity -=1;
+      state.quantity -= 1;
       // state.price = action.payload.price * action.payload.quantity;
     },
     moneyReductionWhenProductRemoved: (state, action) => {
@@ -38,6 +41,7 @@ export const {
   moneyReductionWhenProductRemoved,
   removeAllProducts,
   removeOneProduct,
-  updateProductQuantity
+  updateProductQuantity,
+  updateCartValuewithQuantity
 } = cartSlice.actions;
 export default cartSlice.reducer;
