@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar/Navbar";
 import Announcement from "../components/Announcement";
@@ -6,7 +6,8 @@ import { Line } from "../components/Categories/Categories";
 import { useDispatch, useSelector } from "react-redux";
 import { loginReq } from "../loginApiCalls";
 import { Alert, Snackbar } from "@mui/material";
-import { userRequest } from "../RequestMethods";
+import { publicRequest } from "../RequestMethods";
+import { setProduct } from "../ReduxStore/cartSlice";
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -82,14 +83,29 @@ const Login = () => {
   const { isFetching, isError, currentUser } = useSelector(
     (state) => state.user
   );
-  const loadCartData = async () => {
-    const res = await userRequest.get(`/find/${currentUser._id}`);
-    console.log(res.data);
-  };
+  // const handleCartLoad = async () => {
+  //   console.log(user.accessToken);
+  //   try {
+  //     const res = await publicRequest.post(`/cart/find/${currentUser._id}`, {
+  //       token: currentUser.accessToken,
+  //     });
+  //     console.log(res.data);
+  //     dispatch(setProduct(res.data));
+  //   } catch (error) {
+  //     console.log("hi");
+  //   }
+  // };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     loginReq(dispatch, { username, password });
+    // if(currentUser!=null)
+      // handleCartLoad();
   };
+  // useEffect(()=>{
+  //   loadCartData();
+  // console.log(currentUser);
+  // },[currentUser])
   return (
     <>
       <Announcement />

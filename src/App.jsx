@@ -14,6 +14,9 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import axios from "axios";
+
+
 const App = () => {
   const user = useSelector((state) => state.user.currentUser);
   return (

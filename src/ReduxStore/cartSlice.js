@@ -8,6 +8,11 @@ const cartSlice = createSlice({
     price: 0,
   },
   reducers: {
+    setProduct:(state,action)=>{
+      state.quantity = action.payload.quantity;
+      state.product=action.payload.products;
+      state.price = action.payload.price;
+    },
     addProduct: (state, action) => {
       state.quantity += 1;
       state.product.push(action.payload);
@@ -37,6 +42,7 @@ const cartSlice = createSlice({
 });
 
 export const {
+  setProduct,
   addProduct,
   moneyReductionWhenProductRemoved,
   removeAllProducts,

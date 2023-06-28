@@ -12,25 +12,68 @@ import {
   removeOneProduct,
 } from "../ReduxStore/cartSlice";
 import StripeCheckout from "react-stripe-checkout";
-import { userRequest } from "../RequestMethods";
+import { publicRequest } from "../RequestMethods";
+// import { userRequest } from "../App";
 import { useNavigate } from "react-router-dom";
-import { Bottom, Button, Details, Image, Info, PriceDetail, Product, ProductAmount, ProductAmountContainer, ProductBrand, ProductColor, ProductDetails, ProductId, ProductName, ProductPrice, ProductSize, Summary, SummaryHeader, SummaryItem, SummaryItemPrice, SummaryItemText, Title, Top, TopText, TopTexts, Wrapper } from "./Styles/CartStyles";
-
+import {
+  Bottom,
+  Button,
+  Details,
+  Image,
+  Info,
+  PriceDetail,
+  Product,
+  ProductAmount,
+  ProductAmountContainer,
+  ProductBrand,
+  ProductColor,
+  ProductDetails,
+  ProductId,
+  ProductName,
+  ProductPrice,
+  ProductSize,
+  Summary,
+  SummaryHeader,
+  SummaryItem,
+  SummaryItemPrice,
+  SummaryItemText,
+  Title,
+  Top,
+  TopText,
+  TopTexts,
+  Wrapper,
+} from "./Styles/CartStyles";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const [cartData, setCartData] = useState(cart.product);
-  
+
   const handlePaymentRequest = async () => {
-    console.log(cart.product);
     try {
-      const res = await userRequest.post("/checkout/payment", cart.product);
+      let paymentItem = [];
+      cartData.forEach((item) => {
+        paymentItem.push({
+          _id: item._id,
+          size: item.size,
+          color: item.color,
+          price: item.price,
+          quantity: item.quantity,
+        });
+      });
+      console.log(paymentItem);
+      const res = await publicRequest.post("/checkout/payment", {
+        userId: user.currentUser._id,
+        productData: paymentItem,
+        products: cartData,
+        token: user.currentUser.accessToken,
+      });
       if (res.data.url) {
         window.location.href = res.data.url;
       }
-      console.log(res);
+      console.log(res.data);
     } catch (error) {
       console.log("Error in payment processing");
     }

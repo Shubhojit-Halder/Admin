@@ -9,8 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { loginReq } from "../../loginApiCalls";
 import { logout } from "../../ReduxStore/userSlice";
-import { addProduct, removeAllProducts } from "../../ReduxStore/cartSlice";
-import { publicRequest, userRequest } from "../../RequestMethods";
+import {
+  addProduct,
+  removeAllProducts,
+  setProduct,
+} from "../../ReduxStore/cartSlice";
+import { publicRequest } from "../../RequestMethods";
 const Container = styled.div`
   height: 60px;
   z-index: 3;
@@ -94,11 +98,12 @@ const Navbar = () => {
     try {
       // console.log("hello");
       if (cartItems.quantity) {
-        const res = await userRequest.post(`/cart`, {
+        const res = await publicRequest.post(`/cart`, {
           userId: user._id,
           products: cartItems.product,
           quantity: cartItems.quantity,
           price: cartItems.price,
+          token: user.accessToken,
         });
         console.log(res.data);
       }
@@ -110,6 +115,8 @@ const Navbar = () => {
       console.log(error);
     }
   };
+  
+
   return (
     <Container>
       <Wrapper>
@@ -180,7 +187,7 @@ const Navbar = () => {
           <Link to="/cart">
             <MenuItem sx={{ color: "#000" }}>
               <Badge badgeContent={quantity} color="primary">
-                <ShoppingBagOutlinedIcon />
+                <ShoppingBagOutlinedIcon  />
               </Badge>
             </MenuItem>
           </Link>
