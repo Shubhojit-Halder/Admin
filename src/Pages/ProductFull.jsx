@@ -26,7 +26,11 @@ import {
   Total,
   Wrapper,
 } from "./Styles/ProductFullContainer";
-import { addProduct, updateProductQuantity } from "../ReduxStore/cartSlice";
+import {
+  addProduct,
+  updateCartValuewithQuantity,
+  updateProductQuantity,
+} from "../ReduxStore/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 const ProductFull = () => {
   const cart = useSelector((state) => state.cart);
@@ -39,9 +43,8 @@ const ProductFull = () => {
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const [isLoaded, setisloaded] = useState(false);
-  const cartData =JSON.parse(JSON.stringify(cart.product));
-  
-  
+  const cartData = JSON.parse(JSON.stringify(cart.product));
+
   let push = false;
   let newq = 0;
   console.log(product.price);
@@ -54,6 +57,7 @@ const ProductFull = () => {
         cartData[i].quantity = newq;
         console.log(cartData[i].quantity, newq);
         dispatch(updateProductQuantity(cartData));
+        dispatch(updateCartValuewithQuantity(quantity * cartData[i].price));
         push = true;
         newq = 0;
         break;
@@ -61,7 +65,6 @@ const ProductFull = () => {
     }
     if (!push) dispatch(addProduct({ ...product, quantity, color, size }));
     console.log(cartData);
-
   };
   // console.log({ ...product, quantity, color, size });
   useEffect(() => {
