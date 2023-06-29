@@ -63,7 +63,7 @@ const Cart = () => {
           quantity: item.quantity,
         });
       });
-      console.log(paymentItem);
+      // console.log(paymentItem);
       const res = await publicRequest.post("/checkout/payment", {
         userId: user.currentUser._id,
         productData: paymentItem,

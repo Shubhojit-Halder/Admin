@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Announcement from "../components/Announcement";
 import Slider from "../components/Slider/Slider";
@@ -8,9 +8,11 @@ import Newsletter from "../components/Newsletter/Newsletter";
 import Footer from "../components/Footer/Footer";
 import { useSelector } from "react-redux";
 import Login from "./Login";
+import { publicRequest } from "../RequestMethods";
 
 const Home = () => {
-  const user = useSelector((state) => state.user.currentUser);
+  // const user = useSelector((state) => state.user.currentUser);
+  
   return (
     <>
       <div>

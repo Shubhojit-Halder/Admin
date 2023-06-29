@@ -3,6 +3,7 @@ import { mobile } from "../../Responsive";
 
 export const Container = styled.div``;
 export const Wrapper = styled.div`
+  margin-top: 50px;
   padding: 50px;
   display: flex;
   ${mobile({ flexDirection: "column" })}

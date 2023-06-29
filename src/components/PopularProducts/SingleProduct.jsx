@@ -9,7 +9,7 @@ import { mobile } from "../../Responsive";
 import { Link, useLocation } from "react-router-dom";
 
 
-const Info = styled.div`
+const  Info = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -123,7 +123,7 @@ const SingleProduct = (props) => {
           <ShoppingBagOutlined />
         </Icon>
         <Link to={`/product/${props.data._id}`}>
-          <Icon>
+          <Icon style={{color:"#000"}}>
             <SearchOutlined />
           </Icon>
         </Link>

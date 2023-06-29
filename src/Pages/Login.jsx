@@ -9,6 +9,7 @@ import { Alert, Snackbar } from "@mui/material";
 import { publicRequest } from "../RequestMethods";
 import { setProduct } from "../ReduxStore/cartSlice";
 const Container = styled.div`
+  /* margin-top: 80px; */
   width: 100vw;
   height: 100vh;
   position: absolute;

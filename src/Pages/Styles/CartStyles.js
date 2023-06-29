@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { mobile } from "../../Responsive";
 
 export const Wrapper = styled.div`
+  margin-top: 80px;
   padding: 20px;
   flex-wrap: wrap;
 `;
@@ -36,7 +37,10 @@ export const Bottom = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   min-height: 70vh;
-  ${mobile({ marginTop: "30px",flexDirection:"column" })}/* align-items: center; */
+  ${mobile({
+    marginTop: "30px",
+    flexDirection: "column",
+  })}/* align-items: center; */
 `;
 export const Info = styled.div`
   flex: 3;

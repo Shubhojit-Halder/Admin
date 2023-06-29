@@ -10,6 +10,10 @@ const Container = styled.div`
   justify-content: center;
   font-size: 14px;
   font-weight: 500;
+  position: sticky;
+  z-index: 10;
+  width: 100vw;
+  top:0px;
 `;
 const Announcement = () => {
   return (

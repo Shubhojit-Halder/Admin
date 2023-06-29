@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PopularProducts } from "./Data";
 import SingleProduct from "./SingleProduct";
 import styled from "styled-components";
 import { mobile } from "../../Responsive";
+import { publicRequest } from "../../RequestMethods";
 
 const Wrapper = styled.div`
   margin-top: 20px;
@@ -11,9 +12,7 @@ const Wrapper = styled.div`
 const Header = styled.h1`
   font-size: 60px;
   padding: 10px;
-  ${mobile({ fontSize:"35px" ,padding: "5px"})}
-
-  
+  ${mobile({ fontSize: "35px", padding: "5px" })}
 `;
 const Container = styled.div`
   display: flex;
@@ -28,19 +27,35 @@ const Line = styled.div`
   right: 0;
   margin: auto;
   margin-bottom: 40px;
-  ${mobile({height: "2px" })}
-
-
+  ${mobile({ height: "2px" })}
 `;
+
 const Products = () => {
+  const [popularProducts, setPopularProducts] = useState([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await publicRequest.get("/product?new=true");
+        setPopularProducts(res.data);
+      } catch (err) {
+        console.log("error in popular product", err);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   return (
     <Wrapper>
       <Header>Popular Items</Header>
       <Line />
       <Container>
-        {PopularProducts.map((data, index) => {
-          return <SingleProduct data={data} key={index}/>;
-        })}
+        {popularProducts ? (
+          popularProducts.map((data, index) => {
+            return <SingleProduct data={data} key={index} />;
+          })
+        ) : (
+          <>loading</>
+        )}
       </Container>
     </Wrapper>
   );

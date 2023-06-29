@@ -4,6 +4,7 @@ import styled from "styled-components";
 import SliderData from "./SliderData";
 import { mobile } from "../../Responsive";
 const Container = styled.div`
+  margin-top: 80px;
   width: 100vw;
   height: 100vh;
   display: flex;
