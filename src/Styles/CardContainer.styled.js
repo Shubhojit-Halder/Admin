@@ -11,11 +11,13 @@ export const CardContainer = styled.div`
   .header{
     color: #636363dc;
     font-size: 15px;
+    font-weight: 800;
+
   }
   .footer{
   }
   .number{
-    font-size: 4.2rem;
+    font-size: 3.2rem;
     text-align: center;
   }
 `;

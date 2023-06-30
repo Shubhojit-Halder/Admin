@@ -3,9 +3,11 @@ import { NavContainer } from "../../Styles/Navbar.styled";
 import Badge from "@mui/material/Badge";
 import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
 import { Button } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {logout} from "../../ReduxStore/userSlice"
 const Navbar = () => {
   const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
   return (
     <>
       <NavContainer>
@@ -38,9 +40,10 @@ const Navbar = () => {
               Login
             </Button>
           ) : (
+            <>
             <div
               style={{
-                margin: "0px 20px 0px 10px",
+                margin: "0px 10px",
 
                 background: "#9a9a9a68",
                 width: "40px",
@@ -53,6 +56,8 @@ const Navbar = () => {
             >
               {user.username[0].toUpperCase()}
             </div>
+            <Button variant="outlined" style={{marginRight:"20px",marginLeft:"10px"}} onClick={()=>dispatch(logout())}>LOGOUT</Button>
+            </>
           )}
         </div>
       </NavContainer>

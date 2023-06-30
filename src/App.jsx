@@ -9,6 +9,10 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import Login from "./Pages/Login";
+import SingleOrder from "./components/OrderPage/SingleOrder";
+import AllUsers from "./Pages/AllUsers";
+import AllOrders from "./Pages/AllOrders";
+import AllProducts from "./Pages/AllProducts";
 
 const App = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -29,7 +33,36 @@ const App = () => {
             user !== null && user.isAdmin ? <Navigate to="/" /> : <Login />
           }
         />
+        <Route
+          exact
+          path="/order/:id"
+          element={
+            user !== null && user.isAdmin ? <SingleOrder /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          exact
+          path="/users"
+          element={
+            user !== null && user.isAdmin ? <AllUsers/> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          exact
+          path="/orders"
+          element={
+            user !== null && user.isAdmin ? <AllOrders/> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          exact
+          path="/products"
+          element={
+            user !== null && user.isAdmin ? <AllProducts/> : <Navigate to="/login" />
+          }
+        />
       </Routes>
+      
     </Router>
   );
 };
