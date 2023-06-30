@@ -7,8 +7,9 @@ export const NavContainer = styled.div`
   width: 100vw;
   /* overflow: hidden; */
   box-shadow: 0px 0px 10px #c4c4c470;
-  padding: 10px;
+  padding: 10px 0px;
   z-index: 3;
+  background: #fff;
   .logo {
     color: teal;
     flex: 1;

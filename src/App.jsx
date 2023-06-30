@@ -8,18 +8,26 @@ import {
   Navigate,
 } from "react-router-dom";
 import axios from "axios";
+import Login from "./Pages/Login";
 
 const App = () => {
   const user = useSelector((state) => state.user.currentUser);
   return (
     <Router>
       <Routes>
-        <Route exact path="/dashboard" element={<Home />} />
-
         <Route
           exact
           path="/"
-          element={user !== null ? <Login /> : <Navigate to="/dashboard" />}
+          element={
+            user !== null && user.isAdmin ? <Home /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          exact
+          path="/login"
+          element={
+            user !== null && user.isAdmin ? <Navigate to="/" /> : <Login />
+          }
         />
       </Routes>
     </Router>

@@ -12,4 +12,10 @@ export const CardContainer = styled.div`
     color: #636363dc;
     font-size: 15px;
   }
+  .footer{
+  }
+  .number{
+    font-size: 4.2rem;
+    text-align: center;
+  }
 `;

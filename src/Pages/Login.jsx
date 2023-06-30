@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar/Navbar";
-import Announcement from "../components/Announcement";
-import { Line } from "../components/Categories/Categories";
 import { useDispatch, useSelector } from "react-redux";
 import { loginReq } from "../loginApiCalls";
-import { Alert, Snackbar } from "@mui/material";
-import { publicRequest } from "../RequestMethods";
-import { setProduct } from "../ReduxStore/cartSlice";
+
 const Container = styled.div`
   /* margin-top: 80px; */
   width: 100vw;
@@ -72,6 +68,10 @@ const Button = styled.button`
     cursor: not-allowed;
   }
 `;
+const Line = styled.div`
+  height: 5px;
+  color: teal;
+`;
 const Link = styled.a`
   cursor: pointer;
   padding: 5px 10px;
@@ -101,7 +101,7 @@ const Login = () => {
     event.preventDefault();
     loginReq(dispatch, { username, password });
     // if(currentUser!=null)
-      // handleCartLoad();
+    // handleCartLoad();
   };
   // useEffect(()=>{
   //   loadCartData();
@@ -109,7 +109,6 @@ const Login = () => {
   // },[currentUser])
   return (
     <>
-      <Announcement />
       <Navbar />
       <Container
         bg={
@@ -120,7 +119,7 @@ const Login = () => {
           <Title>SIGN IN</Title>
           <Line />
           <Form>
-            {isError && (
+            {(currentUser === null || isError) || (currentUser!==null && !currentUser.isAdmin) && (
               <p style={{ color: "red", fontWeight: 600 }}>
                 Something went wrong!! Try again
               </p>
