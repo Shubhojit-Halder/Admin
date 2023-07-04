@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Box, MainContainer } from "../Styles/MainsectionContainer.styled";
-import Input from "@mui/joy/Input";
-import { Button } from "@mui/material";
+import { Alert, Button, Snackbar } from "@mui/material";
 import {
   getStorage,
   ref,
@@ -13,7 +12,6 @@ import {
 import app from "../firebase";
 import { publicRequest } from "../RequestMethods";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 const initialValues = {
   brand: "",
   title: "",
@@ -21,7 +19,7 @@ const initialValues = {
   inStock: true,
 };
 const AddProduct = () => {
-
+  const [open, setOpen] = useState(false);
   const [productDetails, setProductDetails] = useState(initialValues);
   const [img, setImg] = useState(null);
   const [color, setColor] = useState([]);
@@ -103,6 +101,7 @@ const AddProduct = () => {
         productData: { ...productDetails },
       });
       console.log(res.data);
+      setOpen(true);
     };
     // console.log(productDetails);
     if (imgUrl !== "") {
@@ -112,6 +111,15 @@ const AddProduct = () => {
 
   return (
     <>
+    <Snackbar
+        open={open}
+        autoHideDuration={4000}
+        onClose={()=>setOpen(false)}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          Item Added Successfully
+        </Alert>
+      </Snackbar>
       <Navbar />
       <Sidebar />
       <MainContainer>

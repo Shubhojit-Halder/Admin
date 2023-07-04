@@ -34,6 +34,7 @@ const AllProducts = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [deletePre, setDeletePre] = useState(false);
   const [deleteItem, setDeleteItem] = useState("");
+  const [open,setOpen]=useState(false);
   const user = useSelector((state) => state.user.currentUser);
   const Navigate = useNavigate();
   useEffect(() => {
@@ -61,31 +62,28 @@ const AllProducts = () => {
       DeleteProduct(deleteItem);
       setDeleteItem("");
       setDeletePre(false);
+
     }
     getAllProducts();
   }, [deletePre]);
 
   return (
     <>
+      <Snackbar
+        open={open}
+        autoHideDuration={4000}
+        onClose={()=>setOpen(false)}
+
+        // sx={{position:"absolute",top:"0%" }}
+        // action={action}
+      >
+        <Alert severity="error" sx={{ width: "100%" }}>
+          Item Deleted Successfully
+        </Alert>
+      </Snackbar>
       <Navbar />
       <Sidebar />
       <MainContainer>
-        <Snackbar
-          open={deleteItem.length != 0}
-          autoHideDuration={3000}
-          onClose={true}
-          // onClose={handleClose}
-          message="Item Deleted Successfully"
-          // action={action}
-        >
-          <Alert
-            // onClose={handleClose}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            This is a success message!
-          </Alert>
-        </Snackbar>
         <Box
           className="users"
           width={"100%"}
@@ -212,6 +210,7 @@ const AllProducts = () => {
           <Popup
             setDeletePre={setDeletePre}
             setDeleteItem={setDeleteItem}
+            setOpen={setOpen}
             data={"Do you want to delete this item?"}
           />
         )}

@@ -11,6 +11,7 @@ const Popup = (props) => {
           variant="contained"
           onClick={() => {
             props.setDeletePre(true);
+            props.setOpen(true);
           }}
           sx={{
             width: "80px",

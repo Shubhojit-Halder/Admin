@@ -22,7 +22,8 @@ const initialValues = {
   inStock: true,
 };
 const UpdateProducts = () => {
- const id = useLocation().pathname.split("/")[2];
+  const id = useLocation().pathname.split("/")[2];
+  const [open, setOpen] = useState(false);
   const [productDetails, setProductDetails] = useState(initialValues);
   const [img, setImg] = useState(null);
   const [color, setColor] = useState([]);
@@ -31,7 +32,6 @@ const UpdateProducts = () => {
   const [imgUrl, setImgUrl] = useState("");
   const user = useSelector((state) => state.user.currentUser);
 
- 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProductDetails({
@@ -104,6 +104,7 @@ const UpdateProducts = () => {
         token: user.accessToken,
         productData: { ...productDetails },
       });
+      setOpen(true);
       console.log(res.data);
     };
     // console.log(productDetails);
@@ -113,6 +114,15 @@ const UpdateProducts = () => {
   }, [imgUrl]);
   return (
     <>
+    <Snackbar
+        open={open}
+        autoHideDuration={4000}
+        onClose={()=>setOpen(false)}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          Item Updated Successfully
+        </Alert>
+      </Snackbar>
       <Navbar />
       <Sidebar />
       <MainContainer>
