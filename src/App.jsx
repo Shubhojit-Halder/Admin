@@ -13,6 +13,8 @@ import SingleOrder from "./components/OrderPage/SingleOrder";
 import AllUsers from "./Pages/AllUsers";
 import AllOrders from "./Pages/AllOrders";
 import AllProducts from "./Pages/AllProducts";
+import AddProduct from "./Pages/AddProduct";
+import UpdateProducts from "./Pages/UpdateProducts";
 
 const App = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -59,6 +61,20 @@ const App = () => {
           path="/products"
           element={
             user !== null && user.isAdmin ? <AllProducts/> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          exact
+          path="/product/add"
+          element={
+            user !== null && user.isAdmin ? <AddProduct/> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          exact
+          path="/product/:id"
+          element={
+            user !== null && user.isAdmin ? <UpdateProducts/> : <Navigate to="/login" />
           }
         />
       </Routes>

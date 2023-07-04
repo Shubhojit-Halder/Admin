@@ -31,6 +31,7 @@ export const MainContainer = styled.div`
     border-radius: 5px;
     color:#fff
   }
+  
 `;
 export const Box = styled.div`
   position: relative;
@@ -46,5 +47,20 @@ export const Box = styled.div`
     color: #636363dc;
     font-size: 15px;
     font-weight: 800;
+  }
+  .sub{
+   width:40% ;
+   padding: 10px 20px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+  }
+  .prod{
+    width:160px;
+    padding: 5px;
+    outline: none;
+  }
+  .prod1{
+    padding: 5px 2px;
   }
 `;

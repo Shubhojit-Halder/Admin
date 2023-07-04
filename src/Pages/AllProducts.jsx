@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar/Navbar";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Box, MainContainer } from "../Styles/MainsectionContainer.styled";
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -15,7 +16,7 @@ import { publicRequest } from "../RequestMethods";
 const AllProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const Navigate = useNavigate();
   useEffect(() => {
     const getAllProducts = async () => {
       try {
@@ -46,7 +47,7 @@ const AllProducts = () => {
           <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
             <Table sx={{ minWidth: "100%" }} aria-label="simple table">
               <TableHead>
-                <TableRow> 
+                <TableRow>
                   <TableCell align="center">Image</TableCell>
                   <TableCell align="center">ProductID</TableCell>
                   <TableCell align="center">Brand</TableCell>
@@ -55,6 +56,7 @@ const AllProducts = () => {
                   <TableCell align="center">Colors</TableCell>
                   <TableCell align="center">Sizes</TableCell>
                   <TableCell align="center">Price</TableCell>
+                  <TableCell align="center">Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody sx={{ maxHeight: "500px", overflowY: "scroll" }}>
@@ -79,38 +81,64 @@ const AllProducts = () => {
                       <TableCell align="right">{data.brand}</TableCell>
                       <TableCell align="right">{data.title}</TableCell>
                       <TableCell align="right">{data.desc}</TableCell>
-                      <TableCell align="right" >
-                        <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                        {data.color.map((data) => {
-                          return (
-                            <div
-                              style={{
-                                margin:"0px 5px",
-                                width: "20px",
-                                height: "20px",
-                                borderRadius: "50%",
-                                backgroundColor:data
-                              }}
-                            ></div>
-                          );
-                        })}
+                      <TableCell align="right">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          {data.color.map((data) => {
+                            return (
+                              <div
+                                style={{
+                                  margin: "0px 5px",
+                                  width: "20px",
+                                  height: "20px",
+                                  borderRadius: "50%",
+                                  backgroundColor: data,
+                                }}
+                              ></div>
+                            );
+                          })}
                         </div>
                       </TableCell>
-                      <TableCell align="right" >
-                        <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                        {data.size.map((data) => {
-                          return (
-                            <span
-                              style={{
-                                margin:"0px 5px",
-                              }}
-                            >{data}</span>
-                          );
-                        })}
+                      <TableCell align="right">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          {data.size.map((data) => {
+                            return (
+                              <span
+                                style={{
+                                  margin: "0px 5px",
+                                }}
+                              >
+                                {data}
+                              </span>
+                            );
+                          })}
                         </div>
                       </TableCell>
                       <TableCell align="right">{data.price}</TableCell>
-
+                      <TableCell align="right">
+                        <Button
+                          variant="contained"
+                          sx={{
+                            bgcolor: "teal",
+                            color: "#fff",
+                            "&:hover": { bgcolor: "#606060" },
+                          }}
+                          onClick={()=>{Navigate(`/product/${data._id}`)}}
+                        >
+                          Edit
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : (
