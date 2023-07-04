@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Sidebar from "../components/Sidebar/Sidebar";
 import { Box, MainContainer } from "../Styles/MainsectionContainer.styled";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {
+  Alert,
+  BottomNavigation,
   Button,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -13,9 +17,24 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { publicRequest } from "../RequestMethods";
+import Popup from "../components/Popup/Popup";
+const tableHeaders = [
+  "Image",
+  "ProductID",
+  "Brand",
+  "Title",
+  "Desc",
+  "Colors",
+  "Sizes",
+  "Price",
+  "Action",
+];
 const AllProducts = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [deletePre, setDeletePre] = useState(false);
+  const [deleteItem, setDeleteItem] = useState("");
+  const user = useSelector((state) => state.user.currentUser);
   const Navigate = useNavigate();
   useEffect(() => {
     const getAllProducts = async () => {
@@ -27,14 +46,46 @@ const AllProducts = () => {
         console.log(error);
       }
     };
+    const DeleteProduct = async (id) => {
+      try {
+        console.log(deletePre, id);
+        const res = await publicRequest.post(`/product/delete/${id}`, {
+          token: user.accessToken,
+        });
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (deletePre) {
+      DeleteProduct(deleteItem);
+      setDeleteItem("");
+      setDeletePre(false);
+    }
     getAllProducts();
-  }, []);
+  }, [deletePre]);
 
   return (
     <>
       <Navbar />
       <Sidebar />
       <MainContainer>
+        <Snackbar
+          open={deleteItem.length != 0}
+          autoHideDuration={3000}
+          onClose={true}
+          // onClose={handleClose}
+          message="Item Deleted Successfully"
+          // action={action}
+        >
+          <Alert
+            // onClose={handleClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            This is a success message!
+          </Alert>
+        </Snackbar>
         <Box
           className="users"
           width={"100%"}
@@ -48,15 +99,9 @@ const AllProducts = () => {
             <Table sx={{ minWidth: "100%" }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="center">Image</TableCell>
-                  <TableCell align="center">ProductID</TableCell>
-                  <TableCell align="center">Brand</TableCell>
-                  <TableCell align="center">Title</TableCell>
-                  <TableCell align="center">Desc</TableCell>
-                  <TableCell align="center">Colors</TableCell>
-                  <TableCell align="center">Sizes</TableCell>
-                  <TableCell align="center">Price</TableCell>
-                  <TableCell align="center">Action</TableCell>
+                  {tableHeaders.map((data) => (
+                    <TableCell align="center">{data}</TableCell>
+                  ))}
                 </TableRow>
               </TableHead>
               <TableBody sx={{ maxHeight: "500px", overflowY: "scroll" }}>
@@ -77,11 +122,11 @@ const AllProducts = () => {
                           }}
                         />
                       </TableCell>
-                      <TableCell align="right">{data._id}</TableCell>
-                      <TableCell align="right">{data.brand}</TableCell>
-                      <TableCell align="right">{data.title}</TableCell>
-                      <TableCell align="right">{data.desc}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">{data._id}</TableCell>
+                      <TableCell align="center">{data.brand}</TableCell>
+                      <TableCell align="center">{data.title}</TableCell>
+                      <TableCell align="center">{data.desc}</TableCell>
+                      <TableCell align="center">
                         <div
                           style={{
                             display: "flex",
@@ -104,7 +149,7 @@ const AllProducts = () => {
                           })}
                         </div>
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <div
                           style={{
                             display: "flex",
@@ -125,18 +170,33 @@ const AllProducts = () => {
                           })}
                         </div>
                       </TableCell>
-                      <TableCell align="right">{data.price}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">{data.price}</TableCell>
+                      <TableCell align="center">
                         <Button
                           variant="contained"
                           sx={{
                             bgcolor: "teal",
                             color: "#fff",
                             "&:hover": { bgcolor: "#606060" },
+                            marginBottom: "15px",
                           }}
-                          onClick={()=>{Navigate(`/product/${data._id}`)}}
+                          onClick={() => {
+                            Navigate(`/product/${data._id}`);
+                          }}
                         >
                           Edit
+                        </Button>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            bgcolor: "#fff",
+                            color: "#da1010",
+                            "&:hover": { bgcolor: "#da1010", color: "#fff" },
+                            marginBottom: "15px",
+                          }}
+                          onClick={() => setDeleteItem(data._id)}
+                        >
+                          <DeleteOutlineIcon />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -148,6 +208,13 @@ const AllProducts = () => {
             </Table>
           </div>
         </Box>
+        {deleteItem != "" && (
+          <Popup
+            setDeletePre={setDeletePre}
+            setDeleteItem={setDeleteItem}
+            data={"Do you want to delete this item?"}
+          />
+        )}
       </MainContainer>
     </>
   );
