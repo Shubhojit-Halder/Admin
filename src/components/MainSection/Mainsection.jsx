@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { publicRequest } from "../../RequestMethods";
 import { useLocation, useNavigate } from "react-router-dom";
+import LoaderComp from "../Loader";
 
 const Mainsection = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -98,31 +99,35 @@ const Mainsection = () => {
       <div className="main">
         <Box className="users" width={"100%"} height={"330px"}>
           <div className="header">{"New Users".toUpperCase()}</div>
-          <div>
-            <Table sx={{ minWidth: "100%" }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell align="center">UserName</TableCell>
-                  <TableCell align="center">Email</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {usersData.map((data) => (
-                  <TableRow
-                    key={data.username}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {data._id.slice(0, 10) + "..."}
-                    </TableCell>
-                    <TableCell align="center">{data.username}</TableCell>
-                    <TableCell align="center">{data.email}</TableCell>
+          {usersData.length != 0 ? (
+            <div>
+              <Table sx={{ minWidth: "100%" }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell align="center">UserName</TableCell>
+                    <TableCell align="center">Email</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                </TableHead>
+                <TableBody>
+                  {usersData.map((data) => (
+                    <TableRow
+                      key={data.username}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {data._id.slice(0, 10) + "..."}
+                      </TableCell>
+                      <TableCell align="center">{data.username}</TableCell>
+                      <TableCell align="center">{data.email}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ) : (
+            <LoaderComp />
+          )}
         </Box>
         <Box
           className="orders"
@@ -131,42 +136,48 @@ const Mainsection = () => {
           header="New Orders"
         >
           <div className="header">{"New Orders".toUpperCase()}</div>
-          <div>
-            <Table sx={{ minWidth: "100%" }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center">UserId</TableCell>
-                  <TableCell align="center">Products</TableCell>
-                  <TableCell align="center">Amount</TableCell>
-                  <TableCell align="center">Status</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {newOrders.map((data) => (
-                  <TableRow
-                    style={{ cursor: "pointer" }}
-                    key={data._id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    onClick={() => {
-                      Navigate(`/order/${data._id}`);
-                    }}
-                  >
-                    <TableCell component="th" scope="data">
-                      {data.userId}
-                    </TableCell>
-                    <TableCell align="center">{data.products.length}</TableCell>
-                    <TableCell align="center">{data.amount / 100}</TableCell>
-                    <TableCell align="center">
-                      <p className={data.status}>
-                        {" "}
-                        {data.status.toUpperCase()}
-                      </p>
-                    </TableCell>
+          {newOrders.length != 0 ? (
+            <div>
+              <Table sx={{ minWidth: "100%" }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">UserId</TableCell>
+                    <TableCell align="center">Products</TableCell>
+                    <TableCell align="center">Amount</TableCell>
+                    <TableCell align="center">Status</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                </TableHead>
+                <TableBody>
+                  {newOrders.map((data) => (
+                    <TableRow
+                      style={{ cursor: "pointer" }}
+                      key={data._id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      onClick={() => {
+                        Navigate(`/order/${data._id}`);
+                      }}
+                    >
+                      <TableCell component="th" scope="data">
+                        {data.userId}
+                      </TableCell>
+                      <TableCell align="center">
+                        {data.products.length}
+                      </TableCell>
+                      <TableCell align="center">{data.amount / 100}</TableCell>
+                      <TableCell align="center">
+                        <p className={data.status}>
+                          {" "}
+                          {data.status.toUpperCase()}
+                        </p>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ) : (
+            <LoaderComp />
+          )}
         </Box>
       </div>
     </MainContainer>

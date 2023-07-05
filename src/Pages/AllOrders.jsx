@@ -12,6 +12,7 @@ import {
 import { publicRequest } from "../RequestMethods";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import LoaderComp from "../components/Loader";
 
 const AllOrders = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -91,7 +92,7 @@ const AllOrders = () => {
                     </TableRow>
                   ))
                 ) : (
-                  <>Please Wait</>
+                  <LoaderComp/>
                 )}
               </TableBody>
             </Table>

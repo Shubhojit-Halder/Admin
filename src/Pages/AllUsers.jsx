@@ -12,6 +12,7 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { publicRequest } from "../RequestMethods";
+import LoaderComp from "../components/Loader";
 
 const AllUsers = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -31,7 +32,7 @@ const AllUsers = () => {
       }
     };
     getAllUsers();
-  });
+  },[]);
   return (
     <>
       <Navbar />
@@ -46,7 +47,7 @@ const AllUsers = () => {
                   <TableCell>ID</TableCell>
                   <TableCell align="right">UserName</TableCell>
                   <TableCell align="right">Email</TableCell>
-                  <TableCell align="right"></TableCell>
+                  {/* <TableCell align="right"></TableCell> */}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -61,7 +62,7 @@ const AllUsers = () => {
                     <TableCell align="right">{data.username}</TableCell>
                     <TableCell align="right">{data.email}</TableCell>
                   </TableRow>
-                )) : <>Please Wait</>}
+                )) : <LoaderComp/>}
               </TableBody>
             </Table>
           </div>

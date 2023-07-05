@@ -125,7 +125,8 @@ const Login = () => {
               </p>
             )}
             <Input
-              placeholder="Email id"
+              // placeholder="Email id"
+              placeholder="Username"
               onChange={(e) => {
                 setUserName(e.target.value);
               }}

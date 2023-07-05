@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box } from "../../Styles/MainsectionContainer.styled";
 import { publicRequest } from "../../RequestMethods";
 import { useLocation } from "react-router-dom";
+import LoaderComp from "../Loader";
 
 const RightSection = () => {
   const location = useLocation();
@@ -79,7 +80,7 @@ const RightSection = () => {
           </div>
         </>
       ) : (
-        <>Please Wait</>
+        <LoaderComp/>
       )}
     </Box>
   );

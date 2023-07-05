@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { Box } from "../../Styles/MainsectionContainer.styled";
+import LoaderComp from "../Loader";
 
 const SingleOrderContainer = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -137,7 +138,7 @@ const SingleOrderContainer = () => {
                 </TableRow>
               </TableBody>
             ) : (
-              <h1 style={{ textAlign: "center" }}>please wait</h1>
+              <LoaderComp/>
             )}
           </Table>
           <Table sx={{ minWidth: "100%" }} aria-label="simple table">
@@ -194,7 +195,7 @@ const SingleOrderContainer = () => {
                 })}
               </TableBody>
             ) : (
-              <h1 style={{ textAlign: "center" }}>please wait</h1>
+              <LoaderComp/>
             )}
           </Table>
         </div>

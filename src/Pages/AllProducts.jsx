@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { publicRequest } from "../RequestMethods";
 import Popup from "../components/Popup/Popup";
+import LoaderComp from "../components/Loader";
 const tableHeaders = [
   "Image",
   "ProductID",
@@ -200,7 +201,7 @@ const AllProducts = () => {
                     </TableRow>
                   ))
                 ) : (
-                  <>Please Wait</>
+                 <LoaderComp/>
                 )}
               </TableBody>
             </Table>
