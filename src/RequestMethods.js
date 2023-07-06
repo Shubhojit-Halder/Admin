@@ -1,5 +1,6 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:5000/api/";
+// const BASE_URL = "http://localhost:5000/api/";
+const BASE_URL = "https://ecommerceapi-6gm4.onrender.com/api/";
 
 // let TOKEN="abcd"
 
