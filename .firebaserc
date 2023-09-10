@@ -1,6 +1,5 @@
 {
-  "hosting": {
-    "site": "haldersadmin",
-    "public": "dist"
+  "projects": {
+    "default": "halders"
   }
 }
