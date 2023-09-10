@@ -1,7 +1,6 @@
 {
   "hosting": {
     "site": "haldersadmin",
-
     "public": "dist"
   }
 }
