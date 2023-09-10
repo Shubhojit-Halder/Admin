@@ -28,7 +28,7 @@ const RightSection = () => {
     <Box width="25%" height="90%">
       <img
         src={oldDetails.img}
-        alt=""
+        alt="Product Img"
         style={{ width: "100%", height: "200px", objectFit: "cover" }}
       />
 

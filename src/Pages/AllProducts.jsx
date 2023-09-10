@@ -113,7 +113,7 @@ const AllProducts = () => {
                       <TableCell component="th" scope="row">
                         <img
                           src={data.img}
-                          alt="img"
+                          alt="Product Img"
                           style={{
                             width: "100px",
                             height: "100px",

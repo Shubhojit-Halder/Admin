@@ -279,7 +279,7 @@ const SingleOrderContainer = () => {
                     marginRight: "20px",
                   }}
                   src={product.img}
-                  alt=""
+                  alt="Product Img"
                 />
                 <div>
                   <p>Brand: {product.brand}</p>
